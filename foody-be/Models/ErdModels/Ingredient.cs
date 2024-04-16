@@ -3,14 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace foody_be.Models.ErdModels
 {
-    [Table("DayPlan")]
-    public class HealthNeedType
+    [Table("Ingredient")]
+    public class Ingredient
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public string name { get; set; }
+        public int ingredientTypeId { get; set; }
+        public int nutritionId { get; set; }
         [Column(TypeName = "text")]
-        public string description { get; set; } 
+        public string image {  get; set; }
+        public bool isLiquid { get; set; }
     }
 }
