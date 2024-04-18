@@ -17,5 +17,9 @@ namespace foody_be.Models.ErdModels
         public string skipDate { get; set; }
         public int createAt { get; set; }
         public bool isChange { get; set; }
+        [ForeignKey("userId")]
+        public virtual User User { get; set; }
+        [ForeignKey("planId")]
+        public virtual Plan Plan { get; set; }
     }
 }

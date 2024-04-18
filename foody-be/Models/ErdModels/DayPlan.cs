@@ -13,6 +13,10 @@ namespace foody_be.Models.ErdModels
         public int planId { get; set; }
         public int mealPlanLenght { get; set; }
         public int nutritionId { get; set; }
-
+        [ForeignKey("planId")]
+        public virtual Plan Plan { get; set; }
+        public virtual ICollection<MealPlan> MealPlan {  get; set; }
+        [ForeignKey("nutritionId")]
+        public virtual Nutrition Nutrition { get; set; }
     }
 }

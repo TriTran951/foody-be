@@ -19,5 +19,8 @@ namespace foody_be.Models.ErdModels
         public int createAt { get; set; }
         public bool isPublic { get; set; }
         public StatusType status { get; set; }
+        [ForeignKey("userId")]
+        public virtual User User { get; set; }
+        public virtual ICollection<Plan> Plan { get; set; }
     }
 }

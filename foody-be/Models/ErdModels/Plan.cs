@@ -9,7 +9,7 @@ namespace foody_be.Models.ErdModels
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public string userId { get; set; }
+        public string dietId { get; set; }
         public string name { get; set; }
         [Column(TypeName = "text")]
         public string description { get; set; }
@@ -17,6 +17,10 @@ namespace foody_be.Models.ErdModels
         public int createAt { get; set; }
         public bool isPublic { get; set; }
         public int nutritionId { get; set; }
-
+        [ForeignKey("dietId")]
+        public virtual Diet Diet { get; set; }
+        public virtual ICollection<Blog> Blog { get; set; }
+        public virtual ICollection<DayPlan> DayPlan { get; set; }
+        public virtual ICollection<PlanHistory> PlanHistory { get; set; }
     }
 }

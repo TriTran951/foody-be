@@ -16,5 +16,9 @@ namespace foody_be.Models.ErdModels
         public string image {  get; set; }
         public int createAt { get; set; }
         public StatusType status { get; set; }
+        [ForeignKey("userId")]
+        public virtual User User { get; set; }
+        [ForeignKey("userId")]
+        public virtual Blog Blog { get; set; }
     }
 }

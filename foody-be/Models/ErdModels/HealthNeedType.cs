@@ -12,5 +12,6 @@ namespace foody_be.Models.ErdModels
         public string name { get; set; }
         [Column(TypeName = "text")]
         public string description { get; set; } 
+        public virtual ICollection<HealthNeed> HealthNeed { get; set; }
     }
 }

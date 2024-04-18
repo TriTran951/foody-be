@@ -8,10 +8,15 @@ namespace foody_be.Models.ErdModels
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
         public string userId { get; set; }
         [Column(TypeName = "text")]
         public string description { get; set; }
         public int healthNeedTypeId { get; set; }
         public int caloriesNeedPerDay { get; set; }
+        [ForeignKey("healthNeedTypeId")]
+        public virtual HealthNeedType HealthNeedType { get; set; }
+        [ForeignKey("userId")]
+        public virtual User User { get; set; }
     }
 }

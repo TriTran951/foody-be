@@ -21,5 +21,11 @@ namespace foody_be.Models.ErdModels
         public string description { get; set; }
         public int createAt { get; set; }
         public StatusType status { get; set; }
+        public virtual HealthNeed HealthNeed { get; set; }
+        public virtual ICollection<Diet>  Diet { get; set; }
+        public virtual ICollection<Comment> Comment { get; set; }
+        public virtual ICollection<Blog> Blog { get;}
+        public virtual ICollection<PlanHistory> PlanHistory { get; set; }
+        public virtual ICollection<Recipe> Recipe { get; set; }
     }
 }
