@@ -18,7 +18,7 @@ namespace foody_be.Models.ErdModels
         public StatusType status { get; set; }
         [ForeignKey("userId")]
         public virtual User User { get; set; }
-        [ForeignKey("userId")]
+        [ForeignKey("blogId")]
         public virtual Blog Blog { get; set; }
     }
 }

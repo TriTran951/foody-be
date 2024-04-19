@@ -10,5 +10,6 @@ namespace foody_be.Models.ErdModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
+        public virtual ICollection<Ingredient> Ingredient { get; set; }
     }
 }

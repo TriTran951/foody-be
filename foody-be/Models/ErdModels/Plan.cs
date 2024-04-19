@@ -9,7 +9,7 @@ namespace foody_be.Models.ErdModels
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public string dietId { get; set; }
+        public int dietId { get; set; }
         public string name { get; set; }
         [Column(TypeName = "text")]
         public string description { get; set; }

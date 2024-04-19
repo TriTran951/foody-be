@@ -13,5 +13,9 @@ namespace foody_be.Models.ErdModels
         public int recipeId { get; set; }
         [Column(TypeName = "text")]
         public string recipeVulue { get; set; }
+        [ForeignKey("mealPlanId")]
+        public virtual MealPlan MealPlan { get; set; }
+        [ForeignKey("recipeId")]
+        public virtual Recipe Recipe { get; set; }
     }
 }

@@ -8,6 +8,8 @@ using foody_be.AppSettings;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using foody_be.Middlewares;
+using foody_be.Services;
+using foody_be.Services.GenericService;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -32,14 +34,15 @@ try
         services.AddSwaggerGen();
         services.ConfigureOptions<ConfigureSwaggerOptions>();
         //add service repository
-        //services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddTransient(typeof(GenericService<>), typeof(GenericService<>));
 
         services.AddScoped<DbContext, MyDbContext>();
 
         //business
         
 
-        //repo
+        //service
+        services.AddScoped<UserService, UserService>();
 
 
         services.AddDbContext<MyDbContext>(option =>

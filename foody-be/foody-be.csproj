@@ -27,9 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\CommonModels\" />
-    <Folder Include="Services\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

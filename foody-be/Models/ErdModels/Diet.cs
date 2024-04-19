@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace foody_be.Models.ErdModels
 {
 
-    [Table("DayPlan")]
+    [Table("Diet")]
     public class Diet
     {
         [Key]
