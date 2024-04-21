@@ -13,8 +13,8 @@ namespace foody_be.Models.ErdModels
         public int ingredientId { get; set; }
         public int amount { get; set; }
         [ForeignKey("recipeId")]
-        public virtual ICollection<Recipe> Recipe { get; set; }
+        public virtual Recipe Recipe { get; set; }
         [ForeignKey("ingredientId")]
-        public virtual ICollection<Ingredient> Ingredient { get; set; }
+        public virtual Ingredient Ingredient { get; set; }
     }
 }

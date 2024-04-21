@@ -21,5 +21,12 @@ namespace foody_be.Models.ErdModels
         public int createAt { get; set; }
         public bool isPublic { get; set; }
         public StatusType status { get; set; }
+        [ForeignKey("userId")]
+        public virtual User User { get; set; }
+        public virtual ICollection<RecipeDirection> Direction { get; set; }
+        [ForeignKey("nutritionId")]
+        public virtual Nutrition Nutrition { get; set; }
+        public virtual ICollection<FoodForMeal> FoodForMeal { get; set; }
+        public virtual ICollection<RecipeIngredient> RecipeIngredient { get; set; }
     }
 }

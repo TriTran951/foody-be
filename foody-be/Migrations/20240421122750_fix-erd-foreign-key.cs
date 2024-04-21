@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace foody_be.Migrations
 {
     /// <inheritdoc />
-    public partial class initerd : Migration
+    public partial class fixerdforeignkey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,41 +74,6 @@ namespace foody_be.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RecipeDirection",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    recipeId = table.Column<int>(type: "int", nullable: false),
-                    order = table.Column<int>(type: "int", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    image = table.Column<string>(type: "text", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeDirection", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "RecipeIngredient",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    recipeId = table.Column<int>(type: "int", nullable: false),
-                    ingredientId = table.Column<int>(type: "int", nullable: false),
-                    amount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeIngredient", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -142,10 +107,11 @@ namespace foody_be.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ingredientTypeId = table.Column<int>(type: "int", nullable: false),
                     nutritionId = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     image = table.Column<string>(type: "text", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    isLiquid = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ingredientId = table.Column<int>(type: "int", nullable: true)
+                    isLiquid = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,10 +123,11 @@ namespace foody_be.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ingredient_RecipeIngredient_ingredientId",
-                        column: x => x.ingredientId,
-                        principalTable: "RecipeIngredient",
-                        principalColumn: "id");
+                        name: "FK_Ingredient_Nutrition_nutritionId",
+                        column: x => x.nutritionId,
+                        principalTable: "Nutrition",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -243,21 +210,22 @@ namespace foody_be.Migrations
                     createAt = table.Column<int>(type: "int", nullable: false),
                     isPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
-                    recipeId = table.Column<int>(type: "int", nullable: true)
+                    Ingredientid = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recipe", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Recipe_RecipeDirection_recipeId",
-                        column: x => x.recipeId,
-                        principalTable: "RecipeDirection",
+                        name: "FK_Recipe_Ingredient_Ingredientid",
+                        column: x => x.Ingredientid,
+                        principalTable: "Ingredient",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Recipe_RecipeIngredient_recipeId",
-                        column: x => x.recipeId,
-                        principalTable: "RecipeIngredient",
-                        principalColumn: "id");
+                        name: "FK_Recipe_Nutrition_nutritionId",
+                        column: x => x.nutritionId,
+                        principalTable: "Nutrition",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Recipe_User_userId",
                         column: x => x.userId,
@@ -290,6 +258,59 @@ namespace foody_be.Migrations
                         name: "FK_Plan_Diet_dietId",
                         column: x => x.dietId,
                         principalTable: "Diet",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "RecipeDirection",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    recipeId = table.Column<int>(type: "int", nullable: false),
+                    order = table.Column<int>(type: "int", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    image = table.Column<string>(type: "text", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeDirection", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_RecipeDirection_Recipe_recipeId",
+                        column: x => x.recipeId,
+                        principalTable: "Recipe",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "RecipeIngredient",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    recipeId = table.Column<int>(type: "int", nullable: false),
+                    ingredientId = table.Column<int>(type: "int", nullable: false),
+                    amount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeIngredient", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredient_Ingredient_ingredientId",
+                        column: x => x.ingredientId,
+                        principalTable: "Ingredient",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredient_Recipe_recipeId",
+                        column: x => x.recipeId,
+                        principalTable: "Recipe",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -547,14 +568,14 @@ namespace foody_be.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredient_ingredientId",
-                table: "Ingredient",
-                column: "ingredientId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_ingredientTypeId",
                 table: "Ingredient",
                 column: "ingredientTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredient_nutritionId",
+                table: "Ingredient",
+                column: "nutritionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MealPlan_dayPlanId",
@@ -582,14 +603,34 @@ namespace foody_be.Migrations
                 column: "userId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipe_recipeId",
+                name: "IX_Recipe_Ingredientid",
                 table: "Recipe",
-                column: "recipeId");
+                column: "Ingredientid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipe_nutritionId",
+                table: "Recipe",
+                column: "nutritionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipe_userId",
                 table: "Recipe",
                 column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeDirection_recipeId",
+                table: "RecipeDirection",
+                column: "recipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredient_ingredientId",
+                table: "RecipeIngredient",
+                column: "ingredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredient_recipeId",
+                table: "RecipeIngredient",
+                column: "recipeId");
         }
 
         /// <inheritdoc />
@@ -605,28 +646,7 @@ namespace foody_be.Migrations
                 name: "HealthNeed");
 
             migrationBuilder.DropTable(
-                name: "Ingredient");
-
-            migrationBuilder.DropTable(
                 name: "PlanHistory");
-
-            migrationBuilder.DropTable(
-                name: "Blog");
-
-            migrationBuilder.DropTable(
-                name: "MealPlan");
-
-            migrationBuilder.DropTable(
-                name: "Recipe");
-
-            migrationBuilder.DropTable(
-                name: "HealthNeedType");
-
-            migrationBuilder.DropTable(
-                name: "IngredientType");
-
-            migrationBuilder.DropTable(
-                name: "DayPlan");
 
             migrationBuilder.DropTable(
                 name: "RecipeDirection");
@@ -635,10 +655,31 @@ namespace foody_be.Migrations
                 name: "RecipeIngredient");
 
             migrationBuilder.DropTable(
-                name: "Nutrition");
+                name: "Blog");
+
+            migrationBuilder.DropTable(
+                name: "MealPlan");
+
+            migrationBuilder.DropTable(
+                name: "HealthNeedType");
+
+            migrationBuilder.DropTable(
+                name: "Recipe");
+
+            migrationBuilder.DropTable(
+                name: "DayPlan");
+
+            migrationBuilder.DropTable(
+                name: "Ingredient");
 
             migrationBuilder.DropTable(
                 name: "Plan");
+
+            migrationBuilder.DropTable(
+                name: "IngredientType");
+
+            migrationBuilder.DropTable(
+                name: "Nutrition");
 
             migrationBuilder.DropTable(
                 name: "Diet");

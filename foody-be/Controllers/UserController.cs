@@ -6,6 +6,7 @@ namespace foody_be.Controllers
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class UserController : Controller
     {
         private readonly UserService _userService;

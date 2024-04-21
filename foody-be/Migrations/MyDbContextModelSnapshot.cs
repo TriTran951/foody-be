@@ -271,23 +271,24 @@ namespace foody_be.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ingredientId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ingredientTypeId")
                         .HasColumnType("int");
 
                     b.Property<bool>("isLiquid")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("nutritionId")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("ingredientId");
-
                     b.HasIndex("ingredientTypeId");
+
+                    b.HasIndex("nutritionId");
 
                     b.ToTable("Ingredient");
                 });
@@ -480,6 +481,9 @@ namespace foody_be.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int?>("Ingredientid")
+                        .HasColumnType("int");
+
                     b.Property<int>("createAt")
                         .HasColumnType("int");
 
@@ -501,9 +505,6 @@ namespace foody_be.Migrations
                     b.Property<int>("nutritionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("recipeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("status")
                         .HasColumnType("int");
 
@@ -516,7 +517,9 @@ namespace foody_be.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("recipeId");
+                    b.HasIndex("Ingredientid");
+
+                    b.HasIndex("nutritionId");
 
                     b.HasIndex("userId");
 
@@ -547,6 +550,8 @@ namespace foody_be.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("recipeId");
+
                     b.ToTable("RecipeDirection");
                 });
 
@@ -568,6 +573,10 @@ namespace foody_be.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("ingredientId");
+
+                    b.HasIndex("recipeId");
 
                     b.ToTable("RecipeIngredient");
                 });
@@ -691,7 +700,7 @@ namespace foody_be.Migrations
                         .IsRequired();
 
                     b.HasOne("foody_be.Models.ErdModels.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("FoodForMeal")
                         .HasForeignKey("recipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -722,15 +731,21 @@ namespace foody_be.Migrations
 
             modelBuilder.Entity("foody_be.Models.ErdModels.Ingredient", b =>
                 {
-                    b.HasOne("foody_be.Models.ErdModels.RecipeIngredient", null)
-                        .WithMany("Ingredient")
-                        .HasForeignKey("ingredientId");
-
-                    b.HasOne("foody_be.Models.ErdModels.IngredientType", null)
+                    b.HasOne("foody_be.Models.ErdModels.IngredientType", "IngredientType")
                         .WithMany("Ingredient")
                         .HasForeignKey("ingredientTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("foody_be.Models.ErdModels.Nutrition", "Nutrition")
+                        .WithMany()
+                        .HasForeignKey("nutritionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IngredientType");
+
+                    b.Navigation("Nutrition");
                 });
 
             modelBuilder.Entity("foody_be.Models.ErdModels.MealPlan", b =>
@@ -784,19 +799,55 @@ namespace foody_be.Migrations
 
             modelBuilder.Entity("foody_be.Models.ErdModels.Recipe", b =>
                 {
-                    b.HasOne("foody_be.Models.ErdModels.RecipeDirection", null)
+                    b.HasOne("foody_be.Models.ErdModels.Ingredient", null)
                         .WithMany("Recipe")
-                        .HasForeignKey("recipeId");
+                        .HasForeignKey("Ingredientid");
 
-                    b.HasOne("foody_be.Models.ErdModels.RecipeIngredient", null)
-                        .WithMany("Recipe")
-                        .HasForeignKey("recipeId");
+                    b.HasOne("foody_be.Models.ErdModels.Nutrition", "Nutrition")
+                        .WithMany()
+                        .HasForeignKey("nutritionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("foody_be.Models.ErdModels.User", null)
+                    b.HasOne("foody_be.Models.ErdModels.User", "User")
                         .WithMany("Recipe")
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Nutrition");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("foody_be.Models.ErdModels.RecipeDirection", b =>
+                {
+                    b.HasOne("foody_be.Models.ErdModels.Recipe", "Recipe")
+                        .WithMany("Direction")
+                        .HasForeignKey("recipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("foody_be.Models.ErdModels.RecipeIngredient", b =>
+                {
+                    b.HasOne("foody_be.Models.ErdModels.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("ingredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("foody_be.Models.ErdModels.Recipe", "Recipe")
+                        .WithMany("RecipeIngredient")
+                        .HasForeignKey("recipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("foody_be.Models.ErdModels.Blog", b =>
@@ -819,6 +870,11 @@ namespace foody_be.Migrations
                     b.Navigation("HealthNeed");
                 });
 
+            modelBuilder.Entity("foody_be.Models.ErdModels.Ingredient", b =>
+                {
+                    b.Navigation("Recipe");
+                });
+
             modelBuilder.Entity("foody_be.Models.ErdModels.IngredientType", b =>
                 {
                     b.Navigation("Ingredient");
@@ -838,16 +894,13 @@ namespace foody_be.Migrations
                     b.Navigation("PlanHistory");
                 });
 
-            modelBuilder.Entity("foody_be.Models.ErdModels.RecipeDirection", b =>
+            modelBuilder.Entity("foody_be.Models.ErdModels.Recipe", b =>
                 {
-                    b.Navigation("Recipe");
-                });
+                    b.Navigation("Direction");
 
-            modelBuilder.Entity("foody_be.Models.ErdModels.RecipeIngredient", b =>
-                {
-                    b.Navigation("Ingredient");
+                    b.Navigation("FoodForMeal");
 
-                    b.Navigation("Recipe");
+                    b.Navigation("RecipeIngredient");
                 });
 
             modelBuilder.Entity("foody_be.Models.ErdModels.User", b =>

@@ -16,6 +16,6 @@ namespace foody_be.Models.ErdModels
         [Column(TypeName = "text")]
         public string image { get; set; }
         [ForeignKey("recipeId")]
-        public virtual ICollection<Recipe> Recipe { get; set; }
+        public virtual Recipe Recipe { get; set; }
     }
 }
